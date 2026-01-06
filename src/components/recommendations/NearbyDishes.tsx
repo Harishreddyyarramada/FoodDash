@@ -12,6 +12,7 @@ import { findFamousDishesByLocation, type FamousDishesOutput } from '@/ai/flows/
 import { Button } from '../ui/button';
 import { Loader, MapPin, UtensilsCrossed, Frown } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from '../ui/badge';
 
 interface NearbyDishesProps {
   open: boolean;
@@ -35,6 +36,7 @@ export function NearbyDishes({ open, onOpenChange }: NearbyDishesProps) {
       setResults(null);
       setError(null);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, state]);
 
   const handleFindDishes = () => {
@@ -129,15 +131,23 @@ export function NearbyDishes({ open, onOpenChange }: NearbyDishesProps) {
         }
         return (
             <div className="space-y-4">
-            {results.dishes.map((dish, index) => (
-                <Alert key={index}>
-                    <UtensilsCrossed className="h-4 w-4" />
-                    <AlertTitle className='font-bold'>{dish.dishName} <span className='font-normal text-muted-foreground'>from {dish.restaurantName}</span></AlertTitle>
-                    <AlertDescription>
-                        {dish.description}
-                    </AlertDescription>
-                </Alert>
-            ))}
+              {results.areaName && (
+                <div className="text-center">
+                  <Badge variant="secondary" className="text-base">
+                    <MapPin className="h-4 w-4 mr-2"/>
+                    {results.areaName}
+                  </Badge>
+                </div>
+              )}
+              {results.dishes.map((dish, index) => (
+                  <Alert key={index}>
+                      <UtensilsCrossed className="h-4 w-4" />
+                      <AlertTitle className='font-bold'>{dish.dishName} <span className='font-normal text-muted-foreground'>from {dish.restaurantName}</span></AlertTitle>
+                      <AlertDescription>
+                          {dish.description}
+                      </AlertDescription>
+                  </Alert>
+              ))}
             </div>
         );
 

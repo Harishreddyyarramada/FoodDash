@@ -17,6 +17,7 @@ const FamousDishesInputSchema = z.object({
 export type FamousDishesInput = z.infer<typeof FamousDishesInputSchema>;
 
 const FamousDishesOutputSchema = z.object({
+  areaName: z.string().describe("The name of the city or general area for the given coordinates."),
   dishes: z.array(
     z.object({
       dishName: z.string().describe('The name of the famous dish.'),
@@ -38,9 +39,11 @@ const prompt = ai.definePrompt({
   name: 'findFamousDishesPrompt',
   input: { schema: FamousDishesInputSchema },
   output: { schema: FamousDishesOutputSchema },
-  prompt: `You are a local food expert. Based on the user's location (latitude: {{{latitude}}}, longitude: {{{longitude}}}), identify 3-5 famous or highly recommended dishes from nearby restaurants.
+  prompt: `You are a local food expert. Based on the user's location (latitude: {{{latitude}}}, longitude: {{{longitude}}}), first identify the general city or area name for these coordinates.
 
-  For each dish, provide its name, the restaurant that serves it, and a brief, compelling description that explains why it's a must-try in that area.
+  Then, identify 3-5 famous or highly recommended dishes from nearby restaurants in that area.
+
+  For each dish, provide its name, the restaurant that serves it, and a brief, compelling description that explains why it's a must-try.
 
   Respond in a valid JSON format that matches the FamousDishesOutputSchema.
   `,
