@@ -215,6 +215,11 @@
           "items": {
             "type": "string"
           }
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role in the system.",
+          "enum": ["customer", "restaurant", "delivery", "admin"]
         }
       },
       "required": [
@@ -224,7 +229,8 @@
         "email",
         "address",
         "phone",
-        "orderIds"
+        "orderIds",
+        "role"
       ]
     },
     "Offer": {
