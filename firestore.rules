@@ -1,0 +1,173 @@
+/**
+ * Core Philosophy: This ruleset implements a dual-access security model. It enforces a strict
+ * user-ownership model for all personal data (profiles, orders, carts), ensuring that a user can
+ * only ever access their own information. In contrast, it provides public, read-only access to
+ * shared application data like restaurants, menu items, and promotional offers.
+ *
+ * Data Structure: User-specific data is hierarchically organized under the `/users/{userId}` path
+ * to create a clear security boundary. Shared data, such as `/restaurants` and `/offers`, is stored
+ * in top-level collections for easy public querying. Menu items are nested under their respective
+ * restaurants at `/restaurants/{restaurantId}/menuItems/{menuItemId}`.
+ *
+ * Key Security Decisions:
+ * - User Isolation: A user can only read and write data within their own document tree
+ *   (e.g., `/users/{their_own_uid}/...`). Listing other users' data is strictly forbidden.
+ * - Public Data is Read-Only: Collections like `/restaurants` and `/offers` are publicly readable by
+ *   anyone, including unauthenticated users, to allow browsing. However, all client-side write
+ *   operations to this data are disabled to prevent unauthorized modification. These collections
+ *   are expected to be managed by a trusted backend or admin role.
+ * - Relational Integrity: On creation, documents with user-specific data (like Orders or Carts)
+ *   must include a `userId` field that matches the authenticated user, enforcing correct ownership
+ *   from the start. This ownership field is immutable.
+ * - Default Secure: Any operation not explicitly permitted is denied.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the authenticated user's UID matches the provided userId.
+     * This is the foundation of the user-ownership security model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // ------------------------------------------------------------------------
+    // User Data Collections
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Controls access to a user's own profile document.
+     * @path /users/{userId}
+     * @allow (create) An authenticated user creating their own profile: `auth.uid == userId`.
+     * @deny (get) An authenticated user trying to read another user's profile: `auth.uid != userId`.
+     * @deny (list) Any user trying to list all user profiles.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isOwner(userId) && resource != null && request.resource.data.id == resource.data.id;
+      allow delete: if isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Controls access to a user's order history.
+     * @path /users/{userId}/orders/{orderId}
+     * @allow (create) An authenticated user creating a new order for themselves: `auth.uid == userId`.
+     * @allow (list) An authenticated user listing their own past orders.
+     * @deny (get) An authenticated user trying to view another user's order.
+     * @principle Enforces document ownership within a user-specific subcollection.
+     */
+    match /users/{userId}/orders/{orderId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isOwner(userId) && resource != null && request.resource.data.userId == resource.data.userId;
+      allow delete: if isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Controls access to a user's shopping cart.
+     * @path /users/{userId}/carts/{cartId}
+     * @allow (create) An authenticated user creating a new cart for themselves.
+     * @allow (get) An authenticated user reading their own cart.
+     * @deny (update) An authenticated user trying to modify another user's cart.
+     * @principle Enforces document ownership within a user-specific subcollection.
+     */
+    match /users/{userId}/carts/{cartId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isOwner(userId) && resource != null && request.resource.data.userId == resource.data.userId;
+      allow delete: if isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Controls access to items within a user's shopping cart.
+     * @path /users/{userId}/carts/{cartId}/cartItems/{cartItemId}
+     * @allow (create) An authenticated user adding an item to their own cart.
+     * @allow (list) An authenticated user listing items in their own cart.
+     * @deny (delete) An authenticated user trying to remove an item from another user's cart.
+     * @principle Inherits ownership from the parent path, securing the entire data tree.
+     */
+    match /users/{userId}/carts/{cartId}/cartItems/{cartItemId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.cartId == cartId;
+      allow update: if isOwner(userId) && resource != null && request.resource.data.cartId == resource.data.cartId;
+      allow delete: if isOwner(userId) && resource != null;
+    }
+
+    // ------------------------------------------------------------------------
+    // Public Data Collections
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Controls access to restaurant data, which is public to all users.
+     * @path /restaurants/{restaurantId}
+     * @allow (get) Any user, authenticated or not, reading a restaurant's details.
+     * @allow (list) Any user, authenticated or not, listing all available restaurants.
+     * @deny (create) Any client trying to add a new restaurant.
+     * @principle Allows public read access but prevents modification from the client-side. Writes should be handled by a secure backend/admin SDK.
+     */
+    match /restaurants/{restaurantId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The 'Restaurant' entity is missing an 'ownerId' or 'creatorId' field.
+      // These writes should be performed by a trusted admin via the Admin SDK.
+      allow create: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow update: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow delete: if false; // TODO: Add admin validation once an admin role system is implemented.
+    }
+
+    /**
+     * @description Controls access to menu items, which are public.
+     * @path /restaurants/{restaurantId}/menuItems/{menuItemId}
+     * @allow (get) Any user, authenticated or not, reading a menu item's details.
+     * @allow (list) Any user, authenticated or not, listing all menu items for a restaurant.
+     * @deny (create) Any client trying to add a new menu item.
+     * @principle Allows public read access but prevents modification from the client-side. Writes should be handled by a secure backend/admin SDK.
+     */
+    match /restaurants/{restaurantId}/menuItems/{menuItemId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The 'MenuItem' entity is missing an 'ownerId' or 'creatorId' field.
+      // These writes should be performed by a trusted admin via the Admin SDK.
+      allow create: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow update: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow delete: if false; // TODO: Add admin validation once an admin role system is implemented.
+    }
+
+    /**
+     * @description Controls access to promotional offers, which are public.
+     * @path /offers/{offerId}
+     * @allow (get) Any user, authenticated or not, reading an offer's details.
+     * @allow (list) Any user, authenticated or not, listing all available offers.
+     * @deny (create) Any client trying to create a new offer.
+     * @principle Allows public read access but prevents modification from the client-side. Writes should be handled by a secure backend/admin SDK.
+     */
+    match /offers/{offerId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The 'Offer' entity is missing an 'ownerId' or 'creatorId' field.
+      // These writes should be performed by a trusted admin via the Admin SDK.
+      allow create: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow update: if false; // TODO: Add admin validation once an admin role system is implemented.
+      allow delete: if false; // TODO: Add admin validation once an admin role system is implemented.
+    }
+  }
+}
