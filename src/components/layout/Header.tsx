@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Tag, HelpCircle, User, ShoppingCart } from 'lucide-react';
+import { Search, Tag, HelpCircle, User, MapPin } from 'lucide-react';
 import { CartIcon } from '@/components/cart/CartIcon';
 import { Button } from '@/components/ui/button';
+import { NearbyDishes } from '@/components/recommendations/NearbyDishes';
+import { useState } from 'react';
 
 const Logo = () => (
   <svg width="40" height="40" viewBox="0 0 214 214" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,6 +15,8 @@ const Logo = () => (
 
 
 export function Header() {
+  const [showNearbyDishes, setShowNearbyDishes] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
@@ -26,6 +30,10 @@ export function Header() {
               <Search className="mr-2" />
               Search
             </Link>
+          </Button>
+          <Button variant="ghost" onClick={() => setShowNearbyDishes(true)}>
+            <MapPin className="mr-2" />
+            Near Me
           </Button>
           <Button variant="ghost" asChild>
             <Link href="/offers">
@@ -54,6 +62,7 @@ export function Header() {
           </Button>
         </nav>
       </div>
+      <NearbyDishes open={showNearbyDishes} onOpenChange={setShowNearbyDishes} />
     </header>
   );
 }
