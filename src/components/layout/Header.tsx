@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { UtensilsCrossed } from 'lucide-react';
+import { UtensilsCrossed, User } from 'lucide-react';
 import { CartIcon } from '@/components/cart/CartIcon';
 import { Button } from '@/components/ui/button';
 
@@ -13,10 +13,27 @@ export function Header() {
           <UtensilsCrossed className="h-6 w-6 text-primary" />
           <span className="font-headline text-xl font-bold">FoodDash</span>
         </Link>
-        <nav>
+        <nav className="flex items-center gap-2">
+          <Button variant="ghost" asChild>
+            <Link href="/">Home</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/offers">Offers</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/dineout">Dineout</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/shopping">Shopping</Link>
+          </Button>
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart">
               <CartIcon />
+            </Link>
+          </Button>
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/login">
+              <User />
             </Link>
           </Button>
         </nav>
