@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/components/cart/CartContext';
 import { Toaster } from "@/components/ui/toaster"
 import { FirebaseClientProvider } from '@/firebase';
+import { UserRedirect } from '@/components/auth/UserRedirect';
 
 export const metadata: Metadata = {
   title: 'FoodDash',
@@ -27,11 +28,13 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <FirebaseClientProvider>
           <CartProvider>
-            <div className="relative flex min-h-dvh flex-col bg-background">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            <UserRedirect>
+              <div className="relative flex min-h-dvh flex-col bg-background">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </UserRedirect>
             <Toaster />
           </CartProvider>
         </FirebaseClientProvider>

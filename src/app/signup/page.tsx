@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/firebase";
+import { useAuth, useUser } from "@/firebase";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useUser } from "@/firebase";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 48 48" {...props}>
@@ -27,14 +25,7 @@ export default function SignupPage() {
   const [role, setRole] = useState('');
   const [error, setError] = useState<string | null>(null);
   const auth = useAuth();
-  const router = useRouter();
   const { user, isUserLoading } = useUser();
-
-  useEffect(() => {
-    if (!isUserLoading && user) {
-      router.push('/');
-    }
-  }, [user, isUserLoading, router]);
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();

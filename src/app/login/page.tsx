@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/firebase";
+import { useAuth, useUser } from "@/firebase";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { useUser } from "@/firebase";
+import { useState } from "react";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 48 48" {...props}>
@@ -25,14 +24,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const auth = useAuth();
-  const router = useRouter();
   const { user, isUserLoading } = useUser();
-
-  useEffect(() => {
-    if (!isUserLoading && user) {
-      router.push('/');
-    }
-  }, [user, isUserLoading, router]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
