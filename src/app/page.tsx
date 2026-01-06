@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <section className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-orange-500">
+        <h1 className="text-4xl md:text-5xl font-headline font-bold mb-4 text-primary">
           FoodDash
         </h1>
         <p className="text-lg text-muted-foreground mb-6">

@@ -4,7 +4,6 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { Card, CardContent } from '@/components/ui/card';
 
 const foodOptions = [
   { name: 'Biryani', imageId: 'food-options-biryani' },
@@ -32,23 +31,23 @@ export function FoodOptions() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold font-headline">Order our best food options</h2>
+        <h2 className="text-2xl font-bold font-headline">What's on your mind?</h2>
       </div>
       <Carousel
         opts={{
           align: 'start',
-          loop: true,
+          loop: false,
         }}
         className="w-full"
       >
-        <CarouselContent>
+        <CarouselContent className='-ml-2'>
           {foodOptions.map((option, index) => {
             const imageData = getImageData(option.imageId);
             return (
-              <CarouselItem key={index} className="basis-1/5 md:basis-1/7 lg:basis-1/8">
+              <CarouselItem key={index} className="basis-1/5 md:basis-1/8 lg:basis-1/10 pl-2">
                 <Link href={`/search?q=${option.name.toLowerCase()}`} className="group">
                   <div className="flex flex-col items-center gap-2">
-                    <div className="relative w-32 h-32">
+                    <div className="relative w-24 h-24">
                         <Image
                             src={imageData.url}
                             alt={option.name}
@@ -57,7 +56,7 @@ export function FoodOptions() {
                             className="object-cover rounded-full group-hover:scale-105 transition-transform"
                         />
                     </div>
-                    <p className="font-semibold text-center mt-2 group-hover:text-primary">{option.name}</p>
+                    <p className="font-semibold text-center mt-1 text-sm group-hover:text-primary">{option.name}</p>
                   </div>
                 </Link>
               </CarouselItem>

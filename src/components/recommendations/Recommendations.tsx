@@ -12,6 +12,7 @@ import { PlusCircle, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useCart } from '@/components/cart/CartContext';
 import { useToast } from "@/hooks/use-toast"
+import { RestaurantCard } from '../restaurants/RestaurantCard';
 
 interface RecommendationItem {
   dish: MenuItem;
@@ -24,18 +25,25 @@ export function Recommendations() {
   const [error, setError] = useState<string | null>(null);
   const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const { toast } = useToast();
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   useEffect(() => {
     async function fetchRecommendations() {
       try {
         setLoading(true);
+        // In a real app, this would be an API call
+        // For now, we simulate it with local data
         const recommendedDishes = getRecommendedItems();
         const recommendationDetails: RecommendationItem[] = recommendedDishes.map(dish => ({
           dish,
           restaurant: getRestaurantById(dish.restaurantId)
         }));
         
+        // Let's also get some restaurants for this section
+        const restaurantData = [getRestaurantById('1'), getRestaurantById('2'), getRestaurantById('3'), getRestaurantById('4')].filter(Boolean) as Restaurant[];
+
         setRecommendations(recommendationDetails);
+        setRestaurants(restaurantData);
         
       } catch (e) {
         setError('Could not fetch recommendations at this time.');
@@ -61,19 +69,10 @@ export function Recommendations() {
         <Carousel opts={{ align: 'start' }} className="w-full">
             <CarouselContent>
             {Array.from({ length: 4 }).map((_, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
-                <div className="p-1">
-                    <Card>
-                    <Skeleton className="h-40 w-full" />
-                    <CardHeader>
-                        <Skeleton className="h-6 w-3/4" />
-                        <Skeleton className="h-4 w-1/4" />
-                    </CardHeader>
-                    <CardContent>
-                        <Skeleton className="h-10 w-full" />
-                    </CardContent>
-                    </Card>
-                </div>
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1">
+                    <Skeleton className="h-80 w-full rounded-2xl" />
+                  </div>
                 </CarouselItem>
             ))}
             </CarouselContent>
@@ -87,7 +86,7 @@ export function Recommendations() {
     return <p className="text-destructive">{error}</p>;
   }
 
-  if (recommendations.length === 0) {
+  if (restaurants.length === 0) {
     return <p className="text-muted-foreground">No recommendations available for you right now.</p>;
   }
 
@@ -98,57 +97,18 @@ export function Recommendations() {
       }}
       className="w-full"
     >
-      <CarouselContent>
-        {recommendations.map(({ dish, restaurant }, index) => {
-          const quantity = getItemQuantity(dish.id);
-          return (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
+      <CarouselContent className="-ml-4">
+        {restaurants.map((restaurant) => (
+            <CarouselItem key={restaurant.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
               <div className="p-1 h-full">
-                <Card className="h-full flex flex-col group overflow-hidden">
-                  <div className="relative h-40 w-full">
-                    <Image
-                      src={dish.imageUrl}
-                      alt={dish.name}
-                      data-ai-hint={dish.imageHint}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="font-headline text-lg">{dish.name}</CardTitle>
-                    <CardDescription>from {restaurant?.name}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex-grow space-y-2">
-                      <Badge variant="secondary">{dish.category}</Badge>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{dish.description}</p>
-                  </CardContent>
-                  <CardContent className="flex justify-between items-center">
-                      <p className="font-bold text-lg">₹{dish.price.toFixed(2)}</p>
-                      {quantity > 0 ? (
-                        <div className="flex items-center gap-2">
-                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(dish.id, quantity - 1)}>
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <span className="w-4 text-center font-semibold">{quantity}</span>
-                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(dish.id, quantity + 1)}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <Button size="sm" onClick={() => handleAddToCart(dish)}>
-                          <PlusCircle className="mr-2 h-4 w-4" />
-                          Add
-                        </Button>
-                      )}
-                  </CardContent>
-                </Card>
+                <RestaurantCard restaurant={restaurant} />
               </div>
             </CarouselItem>
           )
-        })}
+        )}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="ml-12"/>
+      <CarouselNext className="mr-12"/>
     </Carousel>
   );
 }
