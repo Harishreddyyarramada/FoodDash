@@ -8,7 +8,8 @@ import { useAuth, useUser } from "@/firebase";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { initiateEmailSignIn } from "@/firebase/non-blocking-login";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 48 48" {...props}>
@@ -23,28 +24,47 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isUserLoading && user) {
+      router.replace('/');
+    }
+  }, [user, isUserLoading, router]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .catch((err) => {
         setError(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   
   const handleGoogleSignIn = () => {
+    setError(null);
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .catch((err) => {
         setError(err.message);
+        setLoading(false);
       });
   };
 
   if (isUserLoading || user) {
-    return null; // or a loading spinner
+    return (
+        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <p>Loading...</p>
+        </div>
+    );
   }
 
   return (
@@ -58,17 +78,17 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required value={email} onChange={e => setEmail(e.target.value)} />
+              <Input id="email" type="email" placeholder="m@example.com" required value={email} onChange={e => setEmail(e.target.value)} disabled={loading}/>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} />
+              <Input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} disabled={loading}/>
             </div>
             {error && <p className="text-destructive text-sm">{error}</p>}
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button className="w-full" type="submit">Login</Button>
-            <Button variant="outline" className="w-full" type="button" onClick={handleGoogleSignIn}>
+            <Button className="w-full" type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</Button>
+            <Button variant="outline" className="w-full" type="button" onClick={handleGoogleSignIn} disabled={loading}>
               <GoogleIcon className="mr-2 h-5 w-5" />
               Sign in with Google
             </Button>

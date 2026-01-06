@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Tag, HelpCircle, User, MapPin } from 'lucide-react';
+import { Search, Tag, HelpCircle, MapPin } from 'lucide-react';
 import { CartIcon } from '@/components/cart/CartIcon';
 import { Button } from '@/components/ui/button';
 import { NearbyDishes } from '@/components/recommendations/NearbyDishes';
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { UserNav } from '@/components/auth/UserNav';
+import { useUser } from '@/firebase';
 
 const Logo = () => (
   <svg width="40" height="40" viewBox="0 0 214 214" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -19,6 +21,7 @@ export function Header() {
   const [showNearbyDishes, setShowNearbyDishes] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useUser();
 
   const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (pathname === '/') {
@@ -37,8 +40,6 @@ export function Header() {
     { key: 'search', icon: Search, label: 'Search', onClick: handleSearchClick, href: '/' },
     { key: 'offers', icon: Tag, label: 'Offers', href: '/offers', isNew: true },
     { key: 'help', icon: HelpCircle, label: 'Help', href: '/help' },
-    { key: 'login', icon: User, label: 'Sign In', href: '/login' },
-    { key: 'cart', icon: CartIcon, label: 'Cart', href: '/cart' },
   ];
 
   return (
@@ -68,12 +69,12 @@ export function Header() {
               >
                 {onClick ? (
                   <>
-                    <Icon className={cn("h-5 w-5", label !== 'Cart' && "mr-2")} />
+                    <Icon className="h-5 w-5 mr-2" />
                     {label}
                   </>
                 ) : (
                   <Link href={href}>
-                    <Icon className={cn("h-5 w-5", label !== 'Cart' && "mr-2")} />
+                    <Icon className="h-5 w-5 mr-2" />
                     {label}
                     {isNew && <span className="ml-1.5 text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>}
                   </Link>
@@ -81,6 +82,16 @@ export function Header() {
               </Button>
             );
           })}
+          
+          <div className="flex items-center gap-2 border-l ml-2 pl-2">
+            <Button variant="ghost" asChild>
+                <Link href="/cart">
+                    <CartIcon />
+                    <span className="sr-only">Cart</span>
+                </Link>
+            </Button>
+            <UserNav />
+          </div>
         </nav>
       </div>
       <NearbyDishes open={showNearbyDishes} onOpenChange={setShowNearbyDishes} />
