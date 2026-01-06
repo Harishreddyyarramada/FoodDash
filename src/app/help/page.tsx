@@ -5,7 +5,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Code, BookUser } from "lucide-react";
+import { BookUser } from "lucide-react";
 
 export default function HelpPage() {
     return (
@@ -15,46 +15,57 @@ export default function HelpPage() {
                     <BookUser className="h-10 w-10 text-primary" />
                     <div>
                         <h1 className="text-4xl font-headline font-bold">Help Center</h1>
-                        <p className="text-muted-foreground">Find answers to common questions about managing your restaurant.</p>
+                        <p className="text-muted-foreground">Find answers to your questions.</p>
                     </div>
                 </div>
 
                 <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
-                        <AccordionTrigger className="text-lg font-semibold">How do I add a new menu item?</AccordionTrigger>
+                        <AccordionTrigger className="text-lg font-semibold">How do I track my order?</AccordionTrigger>
                         <AccordionContent className="prose prose-lg max-w-none">
-                            <p>To add a new menu item to your restaurant, you need to add a new entry to the `menuItems` array in the `src/lib/data.ts` file. Each menu item is an object with the following structure:</p>
-                            <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                                <code className="font-code text-sm">
-{`{
-  id: 'm37', // Must be unique
-  restaurantId: '1', // The ID of your restaurant
-  name: 'New Awesome Dish',
-  description: 'A delicious description of your new dish.',
-  price: 19.99,
-  imageUrl: "https://picsum.photos/seed/newdish/600/400",
-  imageHint: 'new dish',
-  category: 'Appetizers', // e.g., 'Pizza', 'Burgers', 'Salads'
-  isVegetarian: true, // true if vegetarian, false otherwise
-  tags: ['Best Seller'] // Optional: e.g., ['Best Seller', 'Highly Rated']
-}`}
-                                </code>
-                            </pre>
-                            <p>Make sure to provide a unique `id`, associate it with the correct `restaurantId`, and fill out all the details accurately. The `category` will be used to group items on your restaurant page.</p>
+                            <p>Once your order is placed, you can track its live status by navigating to the "My Orders" section from your user profile menu. You will see the order progress in real-time from "Placed" all the way to "Delivered".</p>
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
-                        <AccordionTrigger className="text-lg font-semibold">How do I edit or remove a menu item?</AccordionTrigger>
+                        <AccordionTrigger className="text-lg font-semibold">What payment methods do you accept?</AccordionTrigger>
                         <AccordionContent className="prose prose-lg max-w-none">
-                            <p>To edit a menu item, locate it in the `menuItems` array in `src/lib/data.ts` by its `id` and modify its properties. To remove an item, simply delete its corresponding object from the array.</p>
-                            <p>After making changes, the application will automatically reflect the updated menu.</p>
+                            <p>We accept a wide range of payment options for your convenience, including Credit/Debit Cards, Net Banking, and Cash on Delivery (COD). You can select your preferred payment method during the checkout process.</p>
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
-                        <AccordionTrigger className="text-lg font-semibold">How do menu categories work?</AccordionTrigger>
+                        <AccordionTrigger className="text-lg font-semibold">Can I cancel my order?</AccordionTrigger>
                         <AccordionContent className="prose prose-lg max-w-none">
-                            <p>Menu categories are determined by the `category` field you set for each `MenuItem`. The restaurant page will automatically create a list of unique categories based on what you've assigned to your items.</p>
-                            <p>When a user clicks on a category, the page will display only the items belonging to that category. Ensure your category names are consistent (e.g., always use "Salads", not "salad" or "Salad") for best results.</p>
+                            <p>Orders can typically be canceled for a short period before the restaurant accepts them. If the option is available, you will see a "Cancel Order" button on the order tracking page. Once the restaurant starts preparing your food, cancellation is no longer possible.</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-4">
+                        <AccordionTrigger className="text-lg font-semibold">What should I do if my order is late?</AccordionTrigger>
+                        <AccordionContent className="prose prose-lg max-w-none">
+                            <p>You can see the real-time location of your delivery partner on the order tracking page. While we and our restaurant partners strive to deliver on time, unforeseen circumstances like traffic or weather can cause delays. If your order is significantly late, please contact our customer support.</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-5">
+                        <AccordionTrigger className="text-lg font-semibold">How do I apply a coupon or offer?</AccordionTrigger>
+                        <AccordionContent className="prose prose-lg max-w-none">
+                            <p>You can find available coupons and offers on our "Offers" page. Simply copy the code and apply it in the "Apply Coupon" section during checkout. The discount will be reflected in your order summary before you place the order.</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-6">
+                        <AccordionTrigger className="text-lg font-semibold">How is the delivery fee calculated?</AccordionTrigger>
+                        <AccordionContent className="prose prose-lg max-w-none">
+                            <p>A standard delivery fee is applied to each order. This fee helps us pay our delivery partners fairly and operate our service. From time to time, we may offer free delivery promotions, which you can find on the "Offers" page.</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                     <AccordionItem value="item-7">
+                        <AccordionTrigger className="text-lg font-semibold">What if I have an issue with my food order?</AccordionTrigger>
+                        <AccordionContent className="prose prose-lg max-w-none">
+                            <p>If you receive an incorrect item, have a quality concern, or find something missing from your order, please contact our customer support through the "Help" section on the order page within a few hours of delivery. We will do our best to resolve the issue with the restaurant.</p>
+                        </AccordionContent>
+                    </AccordionItem>
+                     <AccordionItem value="item-8">
+                        <AccordionTrigger className="text-lg font-semibold">How can I see restaurants near me?</AccordionTrigger>
+                        <AccordionContent className="prose prose-lg max-w-none">
+                            <p>Click the "Near Me" button in the header. If you grant location access, our AI will find famous local dishes and restaurants in your immediate vicinity, helping you discover the best food your area has to offer.</p>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
