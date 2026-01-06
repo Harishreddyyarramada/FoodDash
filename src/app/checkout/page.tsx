@@ -92,12 +92,21 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [orderInfo, setOrderInfo] = useState({ orderId: '', partnerName: '', eta: 0 });
 
   const restaurant = restaurants.find(r => r.id === cartRestaurantId);
   const restaurantLocation = restaurant ? { lat: 12.9716, lon: 77.5946 } : undefined; // Mock location for the restaurant
 
   const { loading: loadingPartners, availablePartners, estimatedPickupTime, assignedPartner } = useDeliveryPartners(restaurantLocation);
+
+  useEffect(() => {
+    // If the cart is empty and an order has not just been placed, redirect to the cart page.
+    if (itemCount === 0 && !isOrderPlaced && typeof window !== 'undefined') {
+      router.replace('/cart');
+    }
+  }, [itemCount, isOrderPlaced, router]);
+
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,20 +121,20 @@ export default function CheckoutPage() {
         partnerName: assignedPartner.name,
         eta: assignedPartner.eta,
     });
-
+    
+    setIsOrderPlaced(true);
     setShowConfirmation(true);
   };
 
   const handleConfirmationClose = () => {
-    setShowConfirmation(false);
     clearCart();
+    setShowConfirmation(false);
     router.push(`/orders/${orderInfo.orderId}`);
   };
 
 
-  if (itemCount === 0 && typeof window !== 'undefined' && !showConfirmation) {
-    if (router) router.push('/cart');
-    return null;
+  if (itemCount === 0 && !isOrderPlaced) {
+    return null; // Render nothing while redirecting
   }
 
   const DeliveryPartnerStatus = () => {
@@ -330,3 +339,5 @@ export default function CheckoutPage() {
     </>
   );
 }
+
+    
