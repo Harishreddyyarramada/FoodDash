@@ -25,6 +25,18 @@
       "imageHint": "salad cafe"
     },
     {
+      "id": "restaurant-5",
+      "description": "Traditional Indian restaurant exterior",
+      "imageUrl": "https://images.unsplash.com/photo-1601633928424-21950a41ad2c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "indian restaurant"
+    },
+    {
+      "id": "restaurant-6",
+      "description": "A cute and modern cake shop",
+      "imageUrl": "https://images.unsplash.com/photo-1588640253434-d835165487b1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "cake shop"
+    },
+    {
       "id": "food-pizza-margherita",
       "description": "Classic Margherita pizza with fresh basil",
       "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYXJnaGVyaXRhJTIwcGl6emF8ZW58MHx8fHwxNzY3Njc5MzM0fDA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -57,7 +69,7 @@
     {
       "id": "food-burger-veggie",
       "description": "A delicious veggie burger",
-      "imageUrl": "https://images.unsplash.com/photo-1603064752734-4c48eff53d05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx2ZWdnaWUlMjBidXJnZXJ8ZW58MHx8fHwxNzY3NzA4MDEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1603064752734-4c48eff53d05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx2ZWdnaWUlMjBidXJnZXJ8ZW58MHx8fHwxNzY3NzA4MDEwfDA&ixlibrb-4.1.0&q=80&w=1080",
       "imageHint": "veggie burger"
     },
     {
@@ -75,8 +87,32 @@
     {
       "id": "food-pasta-carbonara",
       "description": "Creamy pasta carbonara",
-      "imageUrl": "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYXN0YSUyMGNhcmJvbmFyYXxlbnwwfHx8fDE3Njc2NDAwNzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYXN0YSUyMGNhcmJvbmFyYXxlbnwwfHx8fDE3Njc2NDAwNzl8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "pasta carbonara"
+    },
+    {
+      "id": "food-biryani-chicken",
+      "description": "A flavorful chicken biryani",
+      "imageUrl": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "chicken biryani"
+    },
+    {
+      "id": "food-biryani-veg",
+      "description": "A hearty vegetable biryani",
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1695283935398-902d33458667?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "vegetable biryani"
+    },
+    {
+      "id": "food-cake-chocolate",
+      "description": "A slice of rich chocolate truffle cake",
+      "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1987&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "chocolate cake"
+    },
+    {
+      "id": "food-cake-red-velvet",
+      "description": "A slice of beautiful red velvet cake",
+      "imageUrl": "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG9otby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "red velvet"
     }
   ]
 }

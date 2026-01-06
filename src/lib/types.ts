@@ -16,6 +16,7 @@ export type MenuItem = {
   price: number;
   imageUrl: string;
   imageHint: string;
+  category: string;
 };
 
 export type CartItem = {

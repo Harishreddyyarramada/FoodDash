@@ -1,16 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPersonalizedFoodRecommendations, RecommendationOutput } from '@/ai/flows/personalized-food-recommendations';
+import { getRecommendedItems, getRestaurantById } from '@/lib/data';
+import type { MenuItem, Restaurant } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import Image from 'next/image';
+
+interface RecommendationItem {
+  dish: MenuItem;
+  restaurant: Restaurant | undefined;
+}
 
 export function Recommendations() {
-  const [recommendations, setRecommendations] = useState<RecommendationOutput['recommendations']>([]);
+  const [recommendations, setRecommendations] = useState<RecommendationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,14 +25,14 @@ export function Recommendations() {
     async function fetchRecommendations() {
       try {
         setLoading(true);
-        // Using a dummy user ID for demonstration
-        const result = await getPersonalizedFoodRecommendations('user123');
-        if (result && result.recommendations) {
-          setRecommendations(result.recommendations);
-        } else {
-          // Handle case where recommendations might be empty or null
-          setRecommendations([]);
-        }
+        const recommendedDishes = getRecommendedItems();
+        const recommendationDetails: RecommendationItem[] = recommendedDishes.map(dish => ({
+          dish,
+          restaurant: getRestaurantById(dish.restaurantId)
+        }));
+        
+        setRecommendations(recommendationDetails);
+        
       } catch (e) {
         setError('Could not fetch recommendations at this time.');
         console.error(e);
@@ -41,10 +48,11 @@ export function Recommendations() {
     return (
         <Carousel opts={{ align: 'start' }} className="w-full">
             <CarouselContent>
-            {Array.from({ length: 3 }).map((_, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            {Array.from({ length: 4 }).map((_, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                 <div className="p-1">
                     <Card>
+                    <Skeleton className="h-40 w-full" />
                     <CardHeader>
                         <Skeleton className="h-6 w-3/4" />
                         <Skeleton className="h-4 w-1/4" />
@@ -79,22 +87,32 @@ export function Recommendations() {
       className="w-full"
     >
       <CarouselContent>
-        {recommendations.map((rec, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+        {recommendations.map(({ dish, restaurant }, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
             <div className="p-1 h-full">
-              <Card className="h-full flex flex-col">
+              <Card className="h-full flex flex-col group overflow-hidden">
+                <div className="relative h-40 w-full">
+                   <Image
+                    src={dish.imageUrl}
+                    alt={dish.name}
+                    data-ai-hint={dish.imageHint}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-105"
+                  />
+                </div>
                 <CardHeader>
-                  <CardTitle className="font-headline">{rec.dishName}</CardTitle>
-                  <CardDescription>from {rec.restaurantName}</CardDescription>
+                  <CardTitle className="font-headline text-lg">{dish.name}</CardTitle>
+                  <CardDescription>from {restaurant?.name}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-2">
-                    <Badge variant="secondary">{rec.cuisine}</Badge>
-                    <p className="text-sm text-muted-foreground">{rec.description}</p>
+                    <Badge variant="secondary">{dish.category}</Badge>
+                    <p className="text-sm text-muted-foreground line-clamp-2">{dish.description}</p>
                 </CardContent>
-                <CardContent>
-                    <Button size="sm" className="w-full" disabled>
+                <CardContent className="flex justify-between items-center">
+                    <p className="font-bold text-lg">${dish.price.toFixed(2)}</p>
+                    <Button size="sm" disabled>
                         <PlusCircle className="mr-2 h-4 w-4" />
-                        Order Now (Coming Soon)
+                        Add
                     </Button>
                 </CardContent>
               </Card>
