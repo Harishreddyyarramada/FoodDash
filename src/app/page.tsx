@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FoodOptions } from '@/components/home/FoodOptions';
 
 export default function Home() {
   const router = useRouter();
@@ -37,6 +38,10 @@ export default function Home() {
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         </form>
+      </section>
+
+      <section className="mb-12">
+        <FoodOptions />
       </section>
 
       <section className="mb-12">

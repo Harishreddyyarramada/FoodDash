@@ -105,14 +105,98 @@
     {
       "id": "food-cake-chocolate",
       "description": "A slice of rich chocolate truffle cake",
-      "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1987&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageUrl": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "imageHint": "chocolate cake"
     },
     {
       "id": "food-cake-red-velvet",
       "description": "A slice of beautiful red velvet cake",
-      "imageUrl": "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG9otby1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageUrl": "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "imageHint": "red velvet"
+    },
+    {
+      "id": "food-options-biryani",
+      "description": "A delicious bowl of biryani",
+      "imageUrl": "https://images.unsplash.com/photo-1510035618584-c442b241abe7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxiaXJ5YW5pJTIwYm93bHxlbnwwfHx8fDE3Njc3MTEyOTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "biryani bowl"
+    },
+    {
+      "id": "food-options-pizza",
+      "description": "A slice of pizza",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwaXp6YSUyMHNsaWNlfGVufDB8fHx8MTc2NzU5NjgyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pizza slice"
+    },
+    {
+      "id": "food-options-cake",
+      "description": "A slice of cake",
+      "imageUrl": "https://images.unsplash.com/photo-1536599524557-5f784dd53282?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y2FrZSUyMHNsaWNlfGVufDB8fHx8MTc2NzcxMTI5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cake slice"
+    },
+    {
+      "id": "food-options-burger",
+      "description": "A juicy burger",
+      "imageUrl": "https://images.unsplash.com/photo-1647590972586-499475b2e855?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8anVpY3klMjBidXJnZXJ8ZW58MHx8fHwxNzY3NjMwMTA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "juicy burger"
+    },
+    {
+      "id": "food-options-ice-cream",
+      "description": "A scoop of ice cream",
+      "imageUrl": "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpY2UlMjBjcmVhbXxlbnwwfHx8fDE3Njc3MDk4MDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ice cream"
+    },
+    {
+      "id": "food-options-shawarma",
+      "description": "A tasty shawarma",
+      "imageUrl": "https://images.unsplash.com/photo-1762284513008-08f897ff5041?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0YXN0eSUyMHNoYXdhcm1hfGVufDB8fHx8MTc2NzcxMTI5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tasty shawarma"
+    },
+    {
+      "id": "food-options-noodles",
+      "description": "A bowl of noodles",
+      "imageUrl": "https://images.unsplash.com/photo-1573821201069-dbf297ca410a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxub29kbGVzJTIwYm93bHxlbnwwfHx8fDE3Njc3MTEyOTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "noodles bowl"
+    },
+    {
+      "id": "food-options-pastry",
+      "description": "A delicious pastry",
+      "imageUrl": "https://images.unsplash.com/photo-1714972871808-17d0d38954f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZWxpY2lvdXMlMjBwYXN0cnl8ZW58MHx8fHwxNzY3NjYxNjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "delicious pastry"
+    },
+    {
+      "id": "food-options-kebab",
+      "description": "A stick of kebab",
+      "imageUrl": "https://images.unsplash.com/photo-1715099057761-8a26ed3c64dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8a2ViYWIlMjBzdGlja3xlbnwwfHx8fDE3Njc3MTEyOTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "kebab stick"
+    },
+    {
+      "id": "food-options-salad",
+      "description": "A fresh salad",
+      "imageUrl": "https://images.unsplash.com/photo-1654458804670-2f4f26ab3154?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmcmVzaCUyMHNhbGFkfGVufDB8fHx8MTc2NzYzNjA3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fresh salad"
+    },
+    {
+      "id": "food-options-momo",
+      "description": "A plate of momos",
+      "imageUrl": "https://images.unsplash.com/photo-1646791810233-8518d4888166?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtb21vJTIwcGxhdGV8ZW58MHx8fHwxNzY3NzExMjk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "momo plate"
+    },
+    {
+      "id": "food-options-tea",
+      "description": "A cup of tea",
+      "imageUrl": "https://images.unsplash.com/photo-1577968897966-3d4325b36b61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZWElMjBjdXB8ZW58MHx8fHwxNzY3NjIxNjk3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tea cup"
+    },
+    {
+      "id": "food-options-pasta",
+      "description": "A plate of pasta",
+      "imageUrl": "https://images.unsplash.com/photo-1704915912460-50f04daa756e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwYXN0YSUyMHBsYXRlfGVufDB8fHx8MTc2NzcxMTI5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pasta plate"
+    },
+    {
+      "id": "food-options-paratha",
+      "description": "A flaky paratha",
+      "imageUrl": "https://picsum.photos/seed/parathaoption/200/200",
+      "imageHint": "flaky paratha"
     }
   ]
 }
