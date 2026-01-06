@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Minus, Plus } from 'lucide-react';
 import type { MenuItem } from '@/lib/types';
 import {
   Card,
@@ -20,8 +20,9 @@ interface MenuItemCardProps {
 }
 
 export function MenuItemCard({ menuItem }: MenuItemCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart, updateQuantity, getItemQuantity } = useCart();
   const { toast } = useToast()
+  const quantity = getItemQuantity(menuItem.id);
 
   const handleAddToCart = () => {
     addToCart(menuItem);
@@ -50,10 +51,22 @@ export function MenuItemCard({ menuItem }: MenuItemCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
         <p className="text-lg font-bold">${menuItem.price.toFixed(2)}</p>
-        <Button onClick={handleAddToCart} size="sm">
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add to Cart
-        </Button>
+        {quantity > 0 ? (
+           <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(menuItem.id, quantity - 1)}>
+              <Minus className="h-4 w-4" />
+            </Button>
+            <span className="w-8 text-center font-semibold">{quantity}</span>
+            <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(menuItem.id, quantity + 1)}>
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button onClick={handleAddToCart} size="sm">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add to Cart
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

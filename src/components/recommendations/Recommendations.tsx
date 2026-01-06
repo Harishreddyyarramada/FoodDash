@@ -8,8 +8,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
+import { useCart } from '@/components/cart/CartContext';
+import { useToast } from "@/hooks/use-toast"
 
 interface RecommendationItem {
   dish: MenuItem;
@@ -20,6 +22,8 @@ export function Recommendations() {
   const [recommendations, setRecommendations] = useState<RecommendationItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { addToCart, updateQuantity, getItemQuantity } = useCart();
+  const { toast } = useToast();
 
   useEffect(() => {
     async function fetchRecommendations() {
@@ -43,6 +47,14 @@ export function Recommendations() {
 
     fetchRecommendations();
   }, []);
+
+  const handleAddToCart = (item: MenuItem) => {
+    addToCart(item);
+    toast({
+      title: "Added to cart",
+      description: `${item.name} has been added to your cart.`,
+    })
+  };
 
   if (loading) {
     return (
@@ -87,38 +99,53 @@ export function Recommendations() {
       className="w-full"
     >
       <CarouselContent>
-        {recommendations.map(({ dish, restaurant }, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
-            <div className="p-1 h-full">
-              <Card className="h-full flex flex-col group overflow-hidden">
-                <div className="relative h-40 w-full">
-                   <Image
-                    src={dish.imageUrl}
-                    alt={dish.name}
-                    data-ai-hint={dish.imageHint}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="font-headline text-lg">{dish.name}</CardTitle>
-                  <CardDescription>from {restaurant?.name}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow space-y-2">
-                    <Badge variant="secondary">{dish.category}</Badge>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{dish.description}</p>
-                </CardContent>
-                <CardContent className="flex justify-between items-center">
-                    <p className="font-bold text-lg">${dish.price.toFixed(2)}</p>
-                    <Button size="sm" disabled>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add
-                    </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
+        {recommendations.map(({ dish, restaurant }, index) => {
+          const quantity = getItemQuantity(dish.id);
+          return (
+            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
+              <div className="p-1 h-full">
+                <Card className="h-full flex flex-col group overflow-hidden">
+                  <div className="relative h-40 w-full">
+                    <Image
+                      src={dish.imageUrl}
+                      alt={dish.name}
+                      data-ai-hint={dish.imageHint}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="font-headline text-lg">{dish.name}</CardTitle>
+                    <CardDescription>from {restaurant?.name}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow space-y-2">
+                      <Badge variant="secondary">{dish.category}</Badge>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{dish.description}</p>
+                  </CardContent>
+                  <CardContent className="flex justify-between items-center">
+                      <p className="font-bold text-lg">${dish.price.toFixed(2)}</p>
+                      {quantity > 0 ? (
+                        <div className="flex items-center gap-2">
+                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(dish.id, quantity - 1)}>
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <span className="w-4 text-center font-semibold">{quantity}</span>
+                          <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(dish.id, quantity + 1)}>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <Button size="sm" onClick={() => handleAddToCart(dish)}>
+                          <PlusCircle className="mr-2 h-4 w-4" />
+                          Add
+                        </Button>
+                      )}
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          )
+        })}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
