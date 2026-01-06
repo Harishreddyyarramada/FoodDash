@@ -27,6 +27,8 @@ export type CartItem = {
   quantity: number;
 };
 
+export type OrderStatus = 'PLACED' | 'ACCEPTED' | 'PREPARING' | 'PICKED' | 'ON_THE_WAY' | 'DELIVERED';
+
 export type Order = {
   id: string;
   items: CartItem[];
@@ -35,5 +37,5 @@ export type Order = {
     name: string;
     address: string;
   };
-  status: 'Order Placed' | 'Preparing Food' | 'Out for Delivery' | 'Delivered';
+  status: OrderStatus;
 };

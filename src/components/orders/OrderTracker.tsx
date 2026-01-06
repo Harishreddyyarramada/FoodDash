@@ -1,15 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PackageCheck, Soup, Bike, CheckCircle2 } from 'lucide-react';
+import { PackageCheck, ChefHat, Bike, CheckCircle2, Package, Truck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import type { OrderStatus } from '@/lib/types';
 
-const orderStatuses = [
-  { name: 'Order Placed', icon: PackageCheck },
-  { name: 'Preparing Food', icon: Soup },
-  { name: 'Out for Delivery', icon: Bike },
-  { name: 'Delivered', icon: CheckCircle2 },
+const orderStatuses: { name: OrderStatus; icon: React.ElementType }[] = [
+  { name: 'PLACED', icon: Package },
+  { name: 'ACCEPTED', icon: PackageCheck },
+  { name: 'PREPARING', icon: ChefHat },
+  { name: 'PICKED', icon: Bike },
+  { name: 'ON_THE_WAY', icon: Truck },
+  { name: 'DELIVERED', icon: CheckCircle2 },
 ];
 
 export function OrderTracker() {
@@ -23,6 +26,18 @@ export function OrderTracker() {
       return () => clearTimeout(timer);
     }
   }, [currentStatusIndex]);
+
+  const getStatusDisplayName = (status: OrderStatus) => {
+    switch (status) {
+      case 'PLACED': return 'Order Placed';
+      case 'ACCEPTED': return 'Order Accepted';
+      case 'PREPARING': return 'Preparing Food';
+      case 'PICKED': return 'Picked Up';
+      case 'ON_THE_WAY': return 'Out for Delivery';
+      case 'DELIVERED': return 'Delivered';
+      default: return 'Unknown Status';
+    }
+  };
 
   return (
     <Card>
@@ -52,7 +67,7 @@ export function OrderTracker() {
                       "font-semibold text-lg transition-colors",
                       isActive ? "text-foreground" : "text-muted-foreground"
                     )}>
-                      {status.name}
+                      {getStatusDisplayName(status.name)}
                     </h3>
                     {isCurrent && index < orderStatuses.length - 1 && (
                       <p className="text-sm text-primary animate-pulse">Updating...</p>

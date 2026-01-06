@@ -170,7 +170,8 @@
         },
         "status": {
           "type": "string",
-          "description": "Current status of the order (e.g., pending, preparing, out for delivery, delivered)."
+          "description": "Current status of the order.",
+          "enum": ["PLACED", "ACCEPTED", "PREPARING", "PICKED", "ON_THE_WAY", "DELIVERED"]
         },
         "totalAmount": {
           "type": "number",
