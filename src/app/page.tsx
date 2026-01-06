@@ -11,6 +11,7 @@ import { searchMenuItems } from '@/ai/flows/search';
 import type { MenuItem } from '@/lib/types';
 import { MenuItemCard } from '@/components/restaurants/MenuItemCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { WelcomeBanner } from '@/components/home/WelcomeBanner';
 
 export default function Home() {
   const router = useRouter();
@@ -104,6 +105,8 @@ export default function Home() {
         </section>
       ) : (
         <>
+          <WelcomeBanner />
+
           <section className="mb-12">
             <FoodOptions />
           </section>
