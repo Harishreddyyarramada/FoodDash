@@ -6,7 +6,7 @@ import { CartIcon } from '@/components/cart/CartIcon';
 import { Button } from '@/components/ui/button';
 import { NearbyDishes } from '@/components/recommendations/NearbyDishes';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const Logo = () => (
@@ -15,17 +15,31 @@ const Logo = () => (
   </svg>
 )
 
-const navLinks = [
-  { href: '/search', icon: Search, label: 'Search' },
-  { href: '/offers', icon: Tag, label: 'Offers', isNew: true },
-  { href: '/help', icon: HelpCircle, label: 'Help' },
-  { href: '/login', icon: User, label: 'Sign In' },
-  { href: '/cart', icon: CartIcon, label: 'Cart' },
-];
-
 export function Header() {
   const [showNearbyDishes, setShowNearbyDishes] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (pathname === '/') {
+      e.preventDefault();
+      const searchInput = document.getElementById('main-search-bar');
+      if (searchInput) {
+        searchInput.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      router.push('/');
+    }
+  };
+
+  const navLinks = [
+    { key: 'search', icon: Search, label: 'Search', onClick: handleSearchClick, href: '/' },
+    { key: 'offers', icon: Tag, label: 'Offers', href: '/offers', isNew: true },
+    { key: 'help', icon: HelpCircle, label: 'Help', href: '/help' },
+    { key: 'login', icon: User, label: 'Sign In', href: '/login' },
+    { key: 'cart', icon: CartIcon, label: 'Cart', href: '/cart' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,15 +54,33 @@ export function Header() {
             Near Me
           </Button>
 
-          {navLinks.map(({ href, icon: Icon, label, isNew }) => (
-            <Button key={label} variant="ghost" asChild className={cn(pathname === href && "bg-accent text-accent-foreground")}>
-              <Link href={href}>
-                <Icon className={cn("h-5 w-5", label !== 'Cart' && "mr-2")} />
-                {label}
-                {isNew && <span className="ml-1.5 text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>}
-              </Link>
-            </Button>
-          ))}
+          {navLinks.map(({ key, icon: Icon, label, isNew, href, onClick }) => {
+            const isSearchButton = key === 'search';
+            const isActive = !isSearchButton && pathname === href;
+
+            return (
+              <Button
+                key={key}
+                variant="ghost"
+                asChild={!onClick}
+                onClick={onClick}
+                className={cn(isActive && "bg-accent text-accent-foreground")}
+              >
+                {onClick ? (
+                  <>
+                    <Icon className={cn("h-5 w-5", label !== 'Cart' && "mr-2")} />
+                    {label}
+                  </>
+                ) : (
+                  <Link href={href}>
+                    <Icon className={cn("h-5 w-5", label !== 'Cart' && "mr-2")} />
+                    {label}
+                    {isNew && <span className="ml-1.5 text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded-full">NEW</span>}
+                  </Link>
+                )}
+              </Button>
+            );
+          })}
         </nav>
       </div>
       <NearbyDishes open={showNearbyDishes} onOpenChange={setShowNearbyDishes} />
