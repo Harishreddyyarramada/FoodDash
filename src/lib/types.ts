@@ -30,15 +30,18 @@ export type CartItem = {
   quantity: number;
 };
 
-export type OrderStatus = 'PLACED' | 'ACCEPTED' | 'PREPARING' | 'PICKED' | 'ON_THE_WAY' | 'DELIVERED';
+export type OrderStatus = 'PLACED' | 'ACCEPTED' | 'PREPARING' | 'PICKED' | 'ON_THE_WAY' | 'DELIVERED' | 'CANCELLED';
+
+export type OrderItem = {
+  menuItemId: string;
+  quantity: number;
+}
 
 export type Order = {
   id: string;
-  items: CartItem[];
+  restaurantId: string;
+  items: OrderItem[];
   total: number;
-  customer: {
-    name: string;
-    address: string;
-  };
+  date: string;
   status: OrderStatus;
 };

@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
@@ -28,13 +29,15 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <FirebaseClientProvider>
           <CartProvider>
-            <UserRedirect>
-              <div className="relative flex min-h-dvh flex-col bg-background">
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
-            </UserRedirect>
+            <div className="relative flex min-h-dvh flex-col bg-background">
+              <Header />
+              <main className="flex-1">
+                <UserRedirect>
+                  {children}
+                </UserRedirect>
+              </main>
+              <Footer />
+            </div>
             <Toaster />
           </CartProvider>
         </FirebaseClientProvider>

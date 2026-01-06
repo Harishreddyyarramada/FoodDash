@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useUser } from '@/firebase';
@@ -29,8 +30,16 @@ export function UserRedirect({ children }: { children: React.ReactNode }) {
     }
   }, [user, isUserLoading, router, pathname]);
 
-  // Prevent protected routes from rendering while redirecting
+  // Prevent rendering of auth-gated pages during loading/redirect
+  if (isUserLoading && (AUTH_ROUTES.includes(pathname) || PROTECTED_ROUTES.some(r => pathname.startsWith(r)))) {
+      return null;
+  }
+  
   if (!user && PROTECTED_ROUTES.some(route => pathname.startsWith(route))) {
+    return null; // Or a loading spinner
+  }
+
+  if(user && AUTH_ROUTES.includes(pathname)) {
     return null; // Or a loading spinner
   }
 
