@@ -388,6 +388,74 @@
         "menuItemId",
         "quantity"
       ]
+    },
+    "Payment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Payment",
+      "type": "object",
+      "description": "Represents a payment transaction for an order.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the payment." },
+        "orderId": { "type": "string", "description": "Reference to the Order." },
+        "amount": { "type": "number", "description": "The total amount paid." },
+        "paymentMethod": { "type": "string", "enum": ["card", "netbanking", "cod"], "description": "Method of payment." },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"], "description": "Payment status." },
+        "transactionId": { "type": "string", "description": "Unique identifier from the payment gateway." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of payment creation." }
+      },
+      "required": ["id", "orderId", "amount", "paymentMethod", "status", "createdAt"]
+    },
+    "Delivery": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Delivery",
+      "type": "object",
+      "description": "Represents the delivery details for an order.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the delivery." },
+        "orderId": { "type": "string", "description": "Reference to the Order." },
+        "deliveryPartnerId": { "type": "string", "description": "Reference to the DeliveryPartner." },
+        "status": { "type": "string", "enum": ["pending", "assigned", "picked_up", "delivered"], "description": "Delivery status." },
+        "pickedUpAt": { "type": "string", "format": "date-time", "description": "Timestamp when the order was picked up." },
+        "deliveredAt": { "type": "string", "format": "date-time", "description": "Timestamp when the order was delivered." }
+      },
+      "required": ["id", "orderId", "status"]
+    },
+    "DeliveryPartner": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "DeliveryPartner",
+      "type": "object",
+      "description": "Represents a delivery partner.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the delivery partner, matches their UserProfile ID." },
+        "firstName": { "type": "string", "description": "First name of the partner." },
+        "lastName": { "type": "string", "description": "Last name of the partner." },
+        "phone": { "type": "string", "description": "Phone number of the partner." },
+        "currentLocation": {
+          "type": "object",
+          "properties": {
+            "latitude": { "type": "number" },
+            "longitude": { "type": "number" }
+          }
+        },
+        "vehicleDetails": { "type": "string", "description": "Details of the delivery vehicle (e.g., 'Bike - KA 01 AB 1234')." },
+        "availabilityStatus": { "type": "string", "enum": ["online", "offline", "on-delivery"], "description": "Current status of the partner." }
+      },
+      "required": ["id", "firstName", "lastName", "phone", "availabilityStatus"]
+    },
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Represents a user's review for a restaurant.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the review." },
+        "userId": { "type": "string", "description": "Reference to the UserProfile who wrote the review." },
+        "restaurantId": { "type": "string", "description": "Reference to the Restaurant being reviewed." },
+        "rating": { "type": "number", "description": "Rating given by the user (e.g., 1-5)." },
+        "comment": { "type": "string", "description": "The user's review comment." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the review was submitted." }
+      },
+      "required": ["id", "userId", "restaurantId", "rating", "createdAt"]
     }
   },
   "auth": {
@@ -550,8 +618,42 @@
             }
           ]
         }
+      },
+      {
+        "path": "/payments/{paymentId}",
+        "definition": {
+          "entityName": "Payment",
+          "schema": { "$ref": "#/backend/entities/Payment" },
+          "description": "Stores payment transaction details."
+        }
+      },
+      {
+        "path": "/deliveries/{deliveryId}",
+        "definition": {
+          "entityName": "Delivery",
+          "schema": { "$ref": "#/backend/entities/Delivery" },
+          "description": "Stores delivery information for orders."
+        }
+      },
+      {
+        "path": "/deliveryPartners/{deliveryPartnerId}",
+        "definition": {
+          "entityName": "DeliveryPartner",
+          "schema": { "$ref": "#/backend/entities/DeliveryPartner" },
+          "description": "Stores profiles for delivery partners."
+        }
+      },
+      {
+        "path": "/restaurants/{restaurantId}/reviews/{reviewId}",
+        "definition": {
+          "entityName": "Review",
+          "schema": { "$ref": "#/backend/entities/Review" },
+          "description": "Stores user reviews for a specific restaurant."
+        }
       }
     ],
     "reasoning": "The Firestore data structure is designed to support FoodDash's core features, focusing on security, scalability, and ease of debugging. The structure prioritizes authorization independence by denormalizing relevant data to avoid `get()` calls in security rules. \n\nAuthorization Independence and QAPs:\n\n*   User Profiles: User profiles are stored under `/users/{userId}`. Access is restricted to the user themselves, ensuring private data remains protected.\n*   Restaurants: Restaurants are stored in a flat `/restaurants` collection.  Any user can `list` restaurants. Data integrity is enforced through server-side validation.\n*   Menu Items: Menu items are stored under `/restaurants/{restaurantId}/menuItems/{menuItemId}`.  This enforces a natural hierarchy. Authorization is simplified since menu items inherit the restaurant's context.\n*   Orders: Orders are stored under `/users/{userId}/orders/{orderId}`. Only the user can access their orders. The `restaurantId` is denormalized into the order to facilitate queries and reporting.\n*   Cart: Carts are stored under `/users/{userId}/carts/{cartId}`, linking a cart directly to a user. CartItems are stored as a subcollection under `/users/{userId}/carts/{cartId}/cartItems/{cartItemId}`.\n*   Offers: Offers are stored in a flat `/offers` collection. Listing and reading offers is generally public. The `restaurantId` is denormalized, where applicable, to easily filter offers for a specific restaurant.\n\nDenormalization: The `Order` entity denormalizes the `restaurantId` to enable efficient queries for orders related to a specific restaurant without needing to perform a collection group query.  Menu Items store the `restaurantId` to easily query MenuItems for a Restaurant.\n\nStructural Segregation: Each top-level collection (`/users`, `/restaurants`, `/offers`) represents a distinct security context. User-owned data is segregated under their respective user IDs, while restaurant and offer data are stored in separate collections to support different access patterns.\n\nAccess Modeling:\n\n*   Private User Data: User profiles and their associated orders and carts use path-based ownership (`/users/{userId}`).\n*   Collaborative Data: While not explicitly collaborative, if features like shared carts were added, a `members` map within the cart document would be the preferred approach.\n\nExplicit State Modeling: The `Order` entity uses a `status` field to explicitly track the order's state, facilitating clear and predictable logic."
   }
 }
+
+    
