@@ -3,9 +3,12 @@ export type Restaurant = {
   name: string;
   cuisine: string;
   rating: number;
+  ratingCount: string;
   location: string;
   imageUrl: string;
   imageHint: string;
+  priceForTwo: string;
+  deliveryTime: string;
 };
 
 export type MenuItem = {
