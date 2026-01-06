@@ -4,10 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from './CartContext';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Trash2, ShoppingCart } from 'lucide-react';
+import { Trash2, ShoppingCart, Plus, Minus } from 'lucide-react';
 
 export function CartView() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal, itemCount } = useCart();
@@ -38,14 +37,15 @@ export function CartView() {
               <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-4">
-              <Input
-                type="number"
-                min="1"
-                value={quantity}
-                onChange={(e) => updateQuantity(item.id, parseInt(e.target.value, 10))}
-                className="w-16 text-center"
-                aria-label={`Quantity for ${item.name}`}
-              />
+              <div className="flex items-center gap-2 border rounded-md">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, quantity - 1)}>
+                  <Minus className="h-4 w-4" />
+                </Button>
+                <span className="w-8 text-center font-semibold">{quantity}</span>
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => updateQuantity(item.id, quantity + 1)}>
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
               <p className="font-semibold w-20 text-right">${(item.price * quantity).toFixed(2)}</p>
               <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} aria-label={`Remove ${item.name} from cart`}>
                 <Trash2 className="h-5 w-5 text-destructive" />
