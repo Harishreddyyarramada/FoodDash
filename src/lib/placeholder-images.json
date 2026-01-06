@@ -1,3 +1,82 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "restaurant-1",
+      "description": "Exterior of a modern pizzeria",
+      "imageUrl": "https://images.unsplash.com/photo-1760783320388-d13bb1345b87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2Rlcm4lMjBwaXp6ZXJpYXxlbnwwfHx8fDE3Njc3MDgwMTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern pizzeria"
+    },
+    {
+      "id": "restaurant-2",
+      "description": "Cozy interior of a sushi bar",
+      "imageUrl": "https://images.unsplash.com/photo-1455279032140-49a4bf46f343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdXNoaSUyMGJhcnxlbnwwfHx8fDE3Njc2MTY0MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sushi bar"
+    },
+    {
+      "id": "restaurant-3",
+      "description": "A vibrant and casual burger joint",
+      "imageUrl": "https://images.unsplash.com/photo-1559249849-58451f22f489?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxidXJnZXIlMjBqb2ludHxlbnwwfHx8fDE3Njc2MzYwMjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "burger joint"
+    },
+    {
+      "id": "restaurant-4",
+      "description": "Bright and fresh salad cafe",
+      "imageUrl": "https://images.unsplash.com/photo-1723164817930-c6c40490174b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzYWxhZCUyMGNhZmV8ZW58MHx8fHwxNzY3NzA4MDEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "salad cafe"
+    },
+    {
+      "id": "food-pizza-margherita",
+      "description": "Classic Margherita pizza with fresh basil",
+      "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYXJnaGVyaXRhJTIwcGl6emF8ZW58MHx8fHwxNzY3Njc5MzM0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "margherita pizza"
+    },
+    {
+      "id": "food-pizza-pepperoni",
+      "description": "Pepperoni pizza with melted cheese",
+      "imageUrl": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVwcGVyb25pJTIwcGl6emF8ZW58MHx8fHwxNzY3NjA2MTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pepperoni pizza"
+    },
+    {
+      "id": "food-sushi-california",
+      "description": "California roll sushi set",
+      "imageUrl": "https://images.unsplash.com/photo-1582450871972-ab5ca641643d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdXNoaSUyMHJvbGx8ZW58MHx8fHwxNzY3Njk1Mjk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sushi roll"
+    },
+    {
+      "id": "food-sushi-salmon",
+      "description": "Fresh salmon nigiri",
+      "imageUrl": "https://images.unsplash.com/photo-1657895116163-12e70cc5ff39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzYWxtb24lMjBuaWdpcml8ZW58MHx8fHwxNzY3NjM4MzU3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "salmon nigiri"
+    },
+    {
+      "id": "food-burger-classic",
+      "description": "A classic cheeseburger with fries",
+      "imageUrl": "https://images.unsplash.com/photo-1676515725176-275bb09cc59b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjaGVlc2VidXJnZXIlMjBmcmllc3xlbnwwfHx8fDE3Njc2NDQ1MDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cheeseburger fries"
+    },
+    {
+      "id": "food-burger-veggie",
+      "description": "A delicious veggie burger",
+      "imageUrl": "https://images.unsplash.com/photo-1603064752734-4c48eff53d05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx2ZWdnaWUlMjBidXJnZXJ8ZW58MHx8fHwxNzY3NzA4MDEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "veggie burger"
+    },
+    {
+      "id": "food-salad-caesar",
+      "description": "A fresh Caesar salad with croutons",
+      "imageUrl": "https://images.unsplash.com/photo-1546793665-c74683f339c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjYWVzYXIlMjBzYWxhZHxlbnwwfHx8fDE3Njc1OTg2Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "caesar salad"
+    },
+    {
+      "id": "food-salad-greek",
+      "description": "A vibrant Greek salad",
+      "imageUrl": "https://images.unsplash.com/photo-1636654931290-418d20865e03?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxncmVlayUyMHNhbGFkfGVufDB8fHx8MTc2NzYyNDY4M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "greek salad"
+    },
+    {
+      "id": "food-pasta-carbonara",
+      "description": "Creamy pasta carbonara",
+      "imageUrl": "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYXN0YSUyMGNhcmJvbmFyYXxlbnwwfHx8fDE3Njc2NDAwNzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pasta carbonara"
+    }
+  ]
 }
