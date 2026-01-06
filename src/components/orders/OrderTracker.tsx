@@ -6,13 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import type { OrderStatus } from '@/lib/types';
 
-const orderStatuses: { name: OrderStatus; icon: React.ElementType }[] = [
-  { name: 'PLACED', icon: Package },
-  { name: 'ACCEPTED', icon: PackageCheck },
-  { name: 'PREPARING', icon: ChefHat },
-  { name: 'PICKED', icon: Bike },
-  { name: 'ON_THE_WAY', icon: Truck },
-  { name: 'DELIVERED', icon: CheckCircle2 },
+const orderStatuses: { name: OrderStatus; icon: React.ElementType; description: string; }[] = [
+  { name: 'PLACED', icon: Package, description: 'Your order has been received.' },
+  { name: 'ACCEPTED', icon: PackageCheck, description: 'The restaurant has confirmed your order.' },
+  { name: 'PREPARING', icon: ChefHat, description: 'Your food is being prepared.' },
+  { name: 'PICKED', icon: Bike, description: 'A delivery partner has picked up your order.' },
+  { name: 'ON_THE_WAY', icon: Truck, description: 'Your order is on its way to you.' },
+  { name: 'DELIVERED', icon: CheckCircle2, description: 'Your order has been delivered. Enjoy!' },
 ];
 
 export function OrderTracker() {
@@ -42,36 +42,40 @@ export function OrderTracker() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Order Status</CardTitle>
+        <CardTitle className="text-center">Track Your Order</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="relative">
+        <div className="relative pt-4">
           {/* Timeline line */}
-          <div className="absolute left-6 top-6 h-full w-0.5 bg-border -translate-x-1/2" />
+          <div className="absolute left-6 top-6 h-[calc(100%-2.5rem)] w-0.5 bg-border -translate-x-1/2" />
           
-          <ul className="space-y-8">
+          <ul className="space-y-10">
             {orderStatuses.map((status, index) => {
               const isActive = index <= currentStatusIndex;
               const isCurrent = index === currentStatusIndex;
               
               return (
-                <li key={status.name} className="flex items-center gap-4">
+                <li key={status.name} className="flex items-start gap-4">
                   <div className={cn(
-                      "z-10 flex h-12 w-12 items-center justify-center rounded-full transition-colors",
-                      isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      "z-10 flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500",
+                      isActive ? "bg-primary scale-110 shadow-lg" : "bg-muted scale-90",
+                      isCurrent && "ring-4 ring-primary/20"
                     )}>
-                    <status.icon className="h-6 w-6" />
+                     <status.icon className={cn("h-6 w-6 transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
                   </div>
                   <div>
                     <h3 className={cn(
-                      "font-semibold text-lg transition-colors",
+                      "font-bold text-lg transition-colors",
                       isActive ? "text-foreground" : "text-muted-foreground"
                     )}>
                       {getStatusDisplayName(status.name)}
                     </h3>
-                    {isCurrent && index < orderStatuses.length - 1 && (
-                      <p className="text-sm text-primary animate-pulse">Updating...</p>
-                    )}
+                     <p className={cn("text-sm transition-colors", isActive ? 'text-muted-foreground' : 'text-muted-foreground/50')}>
+                        {isCurrent && index < orderStatuses.length - 1 
+                            ? 'Updating...'
+                            : status.description
+                        }
+                     </p>
                   </div>
                 </li>
               );
