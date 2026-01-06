@@ -123,7 +123,7 @@ export function Recommendations() {
                       <p className="text-sm text-muted-foreground line-clamp-2">{dish.description}</p>
                   </CardContent>
                   <CardContent className="flex justify-between items-center">
-                      <p className="font-bold text-lg">${dish.price.toFixed(2)}</p>
+                      <p className="font-bold text-lg">₹{dish.price.toFixed(2)}</p>
                       {quantity > 0 ? (
                         <div className="flex items-center gap-2">
                           <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(dish.id, quantity - 1)}>

@@ -34,7 +34,7 @@ export function CartView() {
             </div>
             <div className="ml-4 flex-grow">
               <h3 className="font-semibold text-lg">{item.name}</h3>
-              <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 border rounded-md">
@@ -46,7 +46,7 @@ export function CartView() {
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
-              <p className="font-semibold w-20 text-right">${(item.price * quantity).toFixed(2)}</p>
+              <p className="font-semibold w-20 text-right">₹{(item.price * quantity).toFixed(2)}</p>
               <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} aria-label={`Remove ${item.name} from cart`}>
                 <Trash2 className="h-5 w-5 text-destructive" />
               </Button>
@@ -62,16 +62,16 @@ export function CartView() {
           <CardContent className="space-y-4">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>${cartTotal.toFixed(2)}</span>
+              <span>₹{cartTotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Fee</span>
-              <span>$5.00</span>
+              <span>₹50.00</span>
             </div>
             <Separator />
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>${(cartTotal + 5).toFixed(2)}</span>
+              <span>₹{(cartTotal + 50).toFixed(2)}</span>
             </div>
           </CardContent>
           <CardFooter>

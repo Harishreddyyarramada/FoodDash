@@ -137,16 +137,16 @@ export default function CheckoutPage() {
             <CardContent className="space-y-4">
               <div className="flex justify-between">
                 <span>Subtotal ({itemCount} items)</span>
-                <span>${cartTotal.toFixed(2)}</span>
+                <span>₹{cartTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery Fee</span>
-                <span>$5.00</span>
+                <span>₹50.00</span>
               </div>
               <Separator />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>${(cartTotal + 5.00).toFixed(2)}</span>
+                <span>₹{(cartTotal + 50.00).toFixed(2)}</span>
               </div>
             </CardContent>
           </Card>

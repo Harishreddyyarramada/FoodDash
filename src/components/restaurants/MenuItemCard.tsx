@@ -50,7 +50,7 @@ export function MenuItemCard({ menuItem }: MenuItemCardProps) {
         <CardDescription>{menuItem.description}</CardDescription>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <p className="text-lg font-bold">${menuItem.price.toFixed(2)}</p>
+        <p className="text-lg font-bold">₹{menuItem.price.toFixed(2)}</p>
         {quantity > 0 ? (
            <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => updateQuantity(menuItem.id, quantity - 1)}>
