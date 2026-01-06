@@ -8,12 +8,16 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { CreditCard, Landmark, Wallet } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function CheckoutPage() {
   const { cartTotal, itemCount, clearCart } = useCart();
   const router = useRouter();
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,25 +57,75 @@ export default function CheckoutPage() {
               </div>
             </CardContent>
           </Card>
+          
            <Card className="mt-8">
             <CardHeader>
-              <CardTitle>Payment Information</CardTitle>
+              <CardTitle>Payment Method</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="card-number">Card Number</Label>
-                <Input id="card-number" placeholder="**** **** **** 1234" required />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-2">
-                    <Label htmlFor="expiry">Expiry Date</Label>
-                    <Input id="expiry" placeholder="MM/YY" required />
-                 </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="cvc">CVC</Label>
-                    <Input id="cvc" placeholder="123" required />
-                 </div>
-              </div>
+            <CardContent>
+              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4">
+                
+                {/* Credit/Debit Card */}
+                <Label htmlFor="card" className="flex items-center gap-4 p-4 border rounded-lg cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                  <RadioGroupItem value="card" id="card" />
+                  <CreditCard className="h-6 w-6" />
+                  <span className="font-semibold">Credit/Debit Card</span>
+                </Label>
+                {paymentMethod === 'card' && (
+                    <div className="p-4 space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="card-number">Card Number</Label>
+                            <Input id="card-number" placeholder="**** **** **** 1234" required={paymentMethod === 'card'} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="expiry">Expiry Date</Label>
+                                <Input id="expiry" placeholder="MM/YY" required={paymentMethod === 'card'} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="cvc">CVC</Label>
+                                <Input id="cvc" placeholder="123" required={paymentMethod === 'card'} />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+                {/* Net Banking */}
+                <Label htmlFor="netbanking" className="flex items-center gap-4 p-4 border rounded-lg cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                  <RadioGroupItem value="netbanking" id="netbanking" />
+                  <Landmark className="h-6 w-6" />
+                  <span className="font-semibold">Net Banking</span>
+                </Label>
+                 {paymentMethod === 'netbanking' && (
+                    <div className="p-4 space-y-4">
+                        <Select required={paymentMethod === 'netbanking'}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a bank" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="bank1">Bank of Example</SelectItem>
+                            <SelectItem value="bank2">Federal Bank of Studio</SelectItem>
+                            <SelectItem value="bank3">National Bank of Code</SelectItem>
+                            <SelectItem value="bank4">Digital Credit Union</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button className='w-full' variant={'outline'}>Pay Now</Button>
+                    </div>
+                )}
+
+                {/* Cash on Delivery */}
+                <Label htmlFor="cod" className="flex items-center gap-4 p-4 border rounded-lg cursor-pointer has-[:checked]:bg-primary/10 has-[:checked]:border-primary">
+                  <RadioGroupItem value="cod" id="cod" />
+                  <Wallet className="h-6 w-6" />
+                  <span className="font-semibold">Cash on Delivery</span>
+                </Label>
+                 {paymentMethod === 'cod' && (
+                    <div className="p-4 text-sm text-muted-foreground">
+                        You can pay in cash to the delivery agent upon receiving your order.
+                    </div>
+                 )}
+
+              </RadioGroup>
             </CardContent>
           </Card>
         </div>
