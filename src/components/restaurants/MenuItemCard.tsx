@@ -37,7 +37,7 @@ export function MenuItemCard({ menuItem }: MenuItemCardProps) {
   };
 
   return (
-    <Card className="flex flex-col h-full group">
+    <Card className="flex flex-col h-full group bg-background">
         <div className="flex-grow p-4">
              <div className="flex justify-between gap-4">
                 <div>

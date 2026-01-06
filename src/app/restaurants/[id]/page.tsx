@@ -44,13 +44,13 @@ export default function RestaurantPage({ params }: RestaurantPageProps) {
   }, [menu, activeCategory, filter]);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-950 min-h-screen">
       <div className="container mx-auto px-4 py-8">
           <p className="text-sm text-muted-foreground mb-4">
               <Link href="/" className="hover:text-primary">Home</Link> / Anytown / <span className="font-semibold text-foreground">{restaurant.name}</span>
           </p>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+          <div className="bg-background rounded-2xl shadow-lg p-6 mb-6">
               <div className="flex justify-between items-start">
                   <div>
                       <h1 className="text-2xl font-bold font-headline">{restaurant.name}</h1>
@@ -77,13 +77,13 @@ export default function RestaurantPage({ params }: RestaurantPageProps) {
               </div>
           </div>
           
-          <div className="sticky top-16 bg-gray-50 z-40 py-4">
+          <div className="sticky top-16 bg-gray-50 dark:bg-gray-950 z-40 py-4">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold font-headline">Menu</h2>
               <VegNonVegToggle onFilterChange={setFilter} />
             </div>
 
-            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-4 px-4">
               {categories.map(category => (
                 <Button
                   key={category}
@@ -99,39 +99,23 @@ export default function RestaurantPage({ params }: RestaurantPageProps) {
 
           <section>
             {categories.slice(1).map(category => {
-              // Only render the category section if it's the active one or if 'All' is active
-              if (activeCategory !== 'All' && activeCategory !== category) {
-                return null;
-              }
               const itemsForCategory = filteredMenu.filter(item => item.category === category);
-              if (itemsForCategory.length === 0) return null;
+              if (itemsForCategory.length === 0 && activeCategory !== 'All') return null;
 
-              return (
-                <div key={category} id={category.replace(/\s+/g, '-')} className="pt-6">
-                  <h3 className="text-2xl font-bold font-headline mb-4">{category}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {itemsForCategory.map(item => (
-                      <MenuItemCard key={item.id} menuItem={item} />
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
-             {/* Render all items if 'All' is selected */}
-            {activeCategory === 'All' && categories.slice(1).map(category => {
-                const itemsForCategory = filteredMenu.filter(item => item.category === category);
-                if (itemsForCategory.length === 0) return null;
+              if (activeCategory === 'All' || activeCategory === category) {
                 return (
-                  <div key={`all-${category}`} id={`all-${category.replace(/\s+/g, '-')}`} className="pt-6">
+                  <div key={category} id={category.replace(/\s+/g, '-')} className="pt-6">
                     <h3 className="text-2xl font-bold font-headline mb-4">{category}</h3>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {itemsForCategory.map(item => (
                         <MenuItemCard key={item.id} menuItem={item} />
                       ))}
                     </div>
                   </div>
                 )
-              })}
+              }
+              return null;
+            })}
           </section>
 
           {filteredMenu.length === 0 && (
