@@ -1,3 +1,4 @@
+
 export type Restaurant = {
   id: string;
   name: string;
@@ -20,6 +21,8 @@ export type MenuItem = {
   imageUrl: string;
   imageHint: string;
   category: string;
+  isVegetarian: boolean;
+  tags?: ('Best Seller' | 'Highly Rated')[];
 };
 
 export type CartItem = {
