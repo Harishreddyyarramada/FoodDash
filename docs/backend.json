@@ -22,9 +22,22 @@
           "type": "number",
           "description": "Restaurant's average rating (e.g., 4.5 stars)."
         },
-        "location": {
+        "latitude": {
+          "type": "number",
+          "description": "Latitude of the restaurant's location."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude of the restaurant's location."
+        },
+        "openingHours": {
           "type": "string",
-          "description": "Geographic location of the restaurant (e.g., address, coordinates)."
+          "description": "Restaurant's opening and closing times (e.g., '9:00 AM - 10:00 PM')."
+        },
+        "kycStatus": {
+          "type": "string",
+          "description": "Know Your Customer verification status.",
+          "enum": ["pending", "verified", "rejected"]
         },
         "menuItemIds": {
           "type": "array",
@@ -39,9 +52,23 @@
         "name",
         "cuisine",
         "rating",
-        "location",
-        "menuItemIds"
+        "latitude",
+        "longitude",
+        "openingHours",
+        "kycStatus"
       ]
+    },
+    "MenuCategory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MenuCategory",
+      "type": "object",
+      "description": "Represents a category within a restaurant's menu (e.g., Appetizers, Main Course).",
+      "properties": {
+        "id": { "type": "string" },
+        "restaurantId": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["id", "restaurantId", "name"]
     },
     "MenuItem": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -56,6 +83,10 @@
         "restaurantId": {
           "type": "string",
           "description": "Reference to Restaurant. (Relationship: Restaurant 1:N MenuItem)"
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Reference to MenuCategory."
         },
         "name": {
           "type": "string",
@@ -72,16 +103,41 @@
         },
         "price": {
           "type": "number",
-          "description": "Price of the menu item."
+          "description": "Base price of the menu item."
         },
         "availability": {
           "type": "boolean",
           "description": "Indicates whether the menu item is currently available."
+        },
+        "variants": {
+          "type": "array",
+          "description": "Different versions of the item (e.g., size, spice level).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "price": { "type": "number" }
+            },
+            "required": ["name", "price"]
+          }
+        },
+        "addons": {
+          "type": "array",
+          "description": "Optional extras for the item (e.g., extra cheese, toppings).",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "price": { "type": "number" }
+            },
+            "required": ["name", "price"]
+          }
         }
       },
       "required": [
         "id",
         "restaurantId",
+        "categoryId",
         "name",
         "description",
         "imageURL",
@@ -370,6 +426,26 @@
             {
               "name": "restaurantId",
               "description": "The unique ID of the restaurant."
+            }
+          ]
+        }
+      },
+       {
+        "path": "/restaurants/{restaurantId}/menuCategories/{menuCategoryId}",
+        "definition": {
+          "entityName": "MenuCategory",
+          "schema": {
+            "$ref": "#/backend/entities/MenuCategory"
+          },
+          "description": "Stores menu categories for a restaurant.",
+          "params": [
+            {
+              "name": "restaurantId",
+              "description": "The unique ID of the restaurant."
+            },
+            {
+              "name": "menuCategoryId",
+              "description": "The unique ID of the menu category."
             }
           ]
         }
