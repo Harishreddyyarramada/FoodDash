@@ -1,24 +1,31 @@
 'use client';
 
-import { useUser } from '@/firebase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
+// Mock user data
+const mockUser = {
+    displayName: "John Doe",
+    email: "john.doe@example.com",
+    photoURL: "https://github.com/shadcn.png"
+};
 
 export default function ProfilePage() {
-    const { user, isUserLoading } = useUser();
-    const router = useRouter();
+    const [user, setUser] = useState<typeof mockUser | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!isUserLoading && !user) {
-            router.replace('/login');
-        }
-    }, [user, isUserLoading, router]);
+        // Simulate fetching user data
+        setTimeout(() => {
+            setUser(mockUser);
+            setLoading(false);
+        }, 1000);
+    }, []);
 
     const getInitials = (name: string | null | undefined) => {
         if (!name) return 'U';
@@ -29,7 +36,7 @@ export default function ProfilePage() {
         return name[0];
     }
     
-    if (isUserLoading || !user) {
+    if (loading || !user) {
         return (
             <div className="container mx-auto px-4 py-8">
                 <Card className="max-w-2xl mx-auto">

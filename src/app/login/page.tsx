@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth, useUser } from "@/firebase";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { initiateEmailSignIn } from "@/firebase/non-blocking-login";
+import { useState } from "react";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg viewBox="0 0 48 48" {...props}>
@@ -25,47 +22,34 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const auth = useAuth();
-  const { user, isUserLoading } = useUser();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!isUserLoading && user) {
-      router.replace('/');
-    }
-  }, [user, isUserLoading, router]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    signInWithEmailAndPassword(auth, email, password)
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
+    // Mock login logic
+    setTimeout(() => {
+        if (email === 'test@example.com' && password === 'password') {
+            // In a real app, you would set some user state here
+            // For now, we'll just redirect
+            router.replace('/');
+        } else {
+            setError("Invalid email or password.");
+        }
         setLoading(false);
-      });
+    }, 1000);
   };
   
   const handleGoogleSignIn = () => {
     setError(null);
     setLoading(true);
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .catch((err) => {
-        setError(err.message);
+    // Mock google sign-in logic
+    setTimeout(() => {
+        router.replace('/');
         setLoading(false);
-      });
+    }, 1000);
   };
-
-  if (isUserLoading || user) {
-    return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
-            <p>Loading...</p>
-        </div>
-    );
-  }
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">

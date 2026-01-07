@@ -11,17 +11,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth, useUser } from "@/firebase";
-import { LogOut, User as UserIcon, ChefHat, Bike } from "lucide-react";
+import { LogOut, User as UserIcon, ChefHat } from "lucide-react";
 import Link from "next/link";
-import { signOut } from "firebase/auth";
 import { Skeleton } from "../ui/skeleton";
+import { useState, useEffect } from "react";
+
+// Mock user data, assuming a logged-in state for demonstration
+const mockUser = {
+    displayName: "Jane Doe",
+    email: "jane.doe@example.com",
+    photoURL: "https://github.com/shadcn.png"
+};
 
 export function UserNav() {
-    const { user, isUserLoading } = useUser();
-    const auth = useAuth();
+    const [user, setUser] = useState<typeof mockUser | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    if (isUserLoading) {
+    useEffect(() => {
+        // Simulate checking auth state
+        setTimeout(() => {
+            // To test the logged-out state, set this to null
+            setUser(mockUser); 
+            setLoading(false);
+        }, 1000);
+    }, []);
+
+    if (loading) {
         return <Skeleton className="h-10 w-10 rounded-full" />;
     }
 
@@ -77,7 +92,7 @@ export function UserNav() {
                     </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut(auth)}>
+                <DropdownMenuItem onClick={() => setUser(null)}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                 </DropdownMenuItem>

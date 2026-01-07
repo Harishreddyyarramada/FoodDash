@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -63,29 +62,13 @@ const getStatusBadgeVariant = (status: string): "default" | "destructive" | "sec
 }
 
 export default function OrdersPage() {
-    const { user, isUserLoading } = useUser();
-    const router = useRouter();
     const [orders, setOrders] = useState<Order[]>([]);
     
-    useEffect(() => {
-        if (!isUserLoading && !user) {
-            router.replace('/login');
-        }
-    }, [user, isUserLoading, router]);
-
     useEffect(() => {
         // In a real app, you would fetch the user's orders from your backend.
         // For now, we'll use the mock data.
         setOrders(mockOrders);
     }, []);
-
-    if (isUserLoading || !user) {
-        return (
-            <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
-                <p>Loading your orders...</p>
-            </div>
-        );
-    }
     
     if (orders.length === 0) {
         return (

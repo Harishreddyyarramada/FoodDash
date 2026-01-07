@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { UserNav } from '@/components/auth/UserNav';
-import { useUser } from '@/firebase';
 
 const Logo = () => (
   <svg width="40" height="40" viewBox="0 0 214 214" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +20,6 @@ export function Header() {
   const [showNearbyDishes, setShowNearbyDishes] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useUser();
 
   const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (pathname === '/') {

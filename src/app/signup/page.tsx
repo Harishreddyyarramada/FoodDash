@@ -4,11 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth, useUser } from "@/firebase";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -26,15 +24,7 @@ export default function SignupPage() {
   const [role, setRole] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const auth = useAuth();
-  const { user, isUserLoading } = useUser();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!isUserLoading && user) {
-      router.replace('/');
-    }
-  }, [user, isUserLoading, router]);
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,13 +34,11 @@ export default function SignupPage() {
       return;
     }
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-        .catch((err) => {
-            setError(err.message);
-        })
-        .finally(() => {
-            setLoading(false);
-        });
+    // Mock signup logic
+    setTimeout(() => {
+        router.replace('/');
+        setLoading(false);
+    }, 1000);
   };
   
   const handleGoogleSignIn = () => {
@@ -60,23 +48,12 @@ export default function SignupPage() {
     }
     setError(null);
     setLoading(true);
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
+    // Mock google sign-in logic
+    setTimeout(() => {
+        router.replace('/');
         setLoading(false);
-      });
+    }, 1000);
   };
-
-  if (isUserLoading || user) {
-    return (
-        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
-            <p>Loading...</p>
-        </div>
-    );
-  }
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
